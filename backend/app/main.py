@@ -27,7 +27,7 @@ def supabase_health_check()->dict[str,str]:
     try:
         buckets=supabase.storage.list_buckets()
 
-        bucket_exist=any(
+        bucket_exists=any(
             bucket.name == settings.supabase_storage_bucket
             for bucket in buckets
 
