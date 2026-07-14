@@ -55,6 +55,24 @@ def supabase_health_check()->dict[str,str]:
             status_code=503,
             detail="Unable to connect to Supabase.",
         ) from exc
-        
-        
+
+@app.get('/health/database')
+def database_health_check() -> dict[str,str|int]:
+    try:
+        response=(
+            supabase.table('applications')
+            .select("id",count='exact')
+            .limit(1)
+            .execute()
+        )
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "application_count": response.count or 0
+        }   
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="Unable to query the applications table.",
+        ) from exc
 
