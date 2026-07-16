@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     supabase_secret_key: str
     supabase_storage_bucket: str = "job-documents"
 
+    dev_user_id:UUID
+
     model_config = ConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
