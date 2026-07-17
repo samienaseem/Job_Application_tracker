@@ -1,4 +1,5 @@
 from functools import lru_cache
+from uuid import UUID
 
 from pydantic import ConfigDict
 from pydantic_settings import BaseSettings

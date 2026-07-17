@@ -3,11 +3,15 @@ from fastapi import FastAPI, HTTPException
 from app.config import get_settings
 from app.supabase_client import supabase
 
+from app.routers.application import router as application_router
+
 
 
 app=FastAPI(title="Job Application tracker",version = "1.0.0")
 
 settings=get_settings()
+
+app.include_router(application_router)
 
 @app.get("/")
 def root() -> dict[str,str]:
