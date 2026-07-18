@@ -1,0 +1,25 @@
+Frontend sends POST JSON
+          ↓
+FastAPI validates request using ApplicationCreate
+          ↓
+Route receives an ApplicationCreate object
+          ↓
+Route calls create_application()
+          ↓
+Service converts the object with model_dump(mode="json")
+          ↓
+Service adds authenticated user_id
+          ↓
+Supabase inserts the row
+          ↓
+Supabase returns response.data[0]
+          ↓
+Service returns that dictionary
+          ↓
+Route returns the dictionary to FastAPI
+          ↓
+FastAPI validates it using ApplicationResponse
+          ↓
+FastAPI serializes it into JSON
+          ↓
+Frontend receives HTTP 201 response

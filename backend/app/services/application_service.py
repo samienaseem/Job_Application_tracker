@@ -140,7 +140,7 @@ def delete_application(
         user_id=user_id,
         application_id=application_id,
     )
-
+# for update
     response = (
         supabase
         .table("applications")
