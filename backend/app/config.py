@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     supabase_url: str
     supabase_secret_key: str
+    supabase_publishable_secret_key: str
     supabase_storage_bucket: str = "job-documents"
 
     dev_user_id:UUID
