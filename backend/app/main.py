@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
 
 from app.config import get_settings
-from app.supabase_client import supabase
+from app.supabase_client import supabase_admin
 
 from app.routers.application import router as application_router
+from app.routers.auth import router as auth_router
 
 
 
@@ -11,7 +12,10 @@ app=FastAPI(title="Job Application tracker",version = "1.0.0")
 
 settings=get_settings()
 
+
+app.include_router(auth_router)
 app.include_router(application_router)
+
 
 @app.get("/")
 def root() -> dict[str,str]:
@@ -29,7 +33,7 @@ def health_check()->dict[str,str]:
 @app.get("/health/supabase")
 def supabase_health_check()->dict[str,str]:
     try:
-        buckets=supabase.storage.list_buckets()
+        buckets=supabase_admin.storage.list_buckets()
 
         bucket_exists=any(
             bucket.name == settings.supabase_storage_bucket
@@ -64,7 +68,7 @@ def supabase_health_check()->dict[str,str]:
 def database_health_check() -> dict[str,str|int]:
     try:
         response=(
-            supabase.table('applications')
+            supabase_admin.table('applications')
             .select("id",count='exact')
             .limit(1)
             .execute()

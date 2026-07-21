@@ -20,13 +20,15 @@ from app.services.application_service import (
     update_application,
 )
 
+from app.dependencies.auth import CurrentUserDependency
+
 
 router = APIRouter(
     prefix="/api/applications",
     tags=["Applications"],
 )
 
-settings = get_settings()
+# settings = get_settings()
 
 
 ApplicationId = Annotated[
@@ -44,10 +46,11 @@ ApplicationId = Annotated[
 )
 def create_application_endpoint(
     application: ApplicationCreate,
+    current_user: CurrentUserDependency,
 ) -> ApplicationResponse:
     try:
         created_application = create_application(
-            user_id=settings.dev_user_id,
+            user_id=current_user.id,
             application=application,
         )
 
@@ -65,11 +68,12 @@ def create_application_endpoint(
 @router.get(
     "",
     response_model=list[ApplicationResponse],
+    
 )
-def list_applications_endpoint() -> list[ApplicationResponse]:
+def list_applications_endpoint(current_user: CurrentUserDependency,) -> list[ApplicationResponse]:
     try:
         applications = list_applications(
-            user_id=settings.dev_user_id,
+            user_id=current_user.id,
         )
 
         return [
@@ -90,10 +94,11 @@ def list_applications_endpoint() -> list[ApplicationResponse]:
 )
 def get_application_endpoint(
     application_id: ApplicationId,
+    current_user: CurrentUserDependency,
 ) -> ApplicationResponse:
     try:
         application = get_application(
-            user_id=settings.dev_user_id,
+            user_id=current_user.id,
             application_id=application_id,
         )
 
@@ -119,10 +124,11 @@ def get_application_endpoint(
 def update_application_endpoint(
     application_id: ApplicationId,
     application: ApplicationUpdate,
+    current_user: CurrentUserDependency,
 ) -> ApplicationResponse:
     try:
         updated_application = update_application(
-            user_id=settings.dev_user_id,
+            user_id=current_user.id,
             application_id=application_id,
             application=application,
         )
@@ -156,10 +162,11 @@ def update_application_endpoint(
 )
 def delete_application_endpoint(
     application_id: ApplicationId,
+    current_user: CurrentUserDependency,
 ) -> ApplicationDeleteResponse:
     try:
         delete_application(
-            user_id=settings.dev_user_id,
+            user_id=current_user.id,
             application_id=application_id,
         )
 

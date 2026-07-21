@@ -5,7 +5,7 @@ from app.schemas.application import (
     ApplicationCreate,
     ApplicationUpdate,
 )
-from app.supabase_client import supabase
+from app.supabase_client import supabase_admin
 
 
 APPLICATION_COLUMNS = """
@@ -86,7 +86,7 @@ def get_application(
     application_id: UUID,
 ) -> dict[str, Any]:
     response = (
-        supabase
+        supabase_admin    
         .table("applications")
         .select(APPLICATION_COLUMNS)
         .eq("id", str(application_id))
@@ -116,7 +116,7 @@ def update_application(
         raise EmptyApplicationUpdateError
 
     response = (
-        supabase
+        supabase_admin
         .table("applications")
         .update(update_data)
         .eq("id", str(application_id))
@@ -142,7 +142,7 @@ def delete_application(
     )
 # for update
     response = (
-        supabase
+        supabase_admin
         .table("applications")
         .delete()
         .eq("id", str(existing_application["id"]))

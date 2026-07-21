@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     debug:bool = False
 
     supabase_url: str
+    supabase_publishable_key: str
     supabase_secret_key: str
-    supabase_publishable_secret_key: str
     supabase_storage_bucket: str = "job-documents"
 
     dev_user_id:UUID
