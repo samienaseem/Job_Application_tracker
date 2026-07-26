@@ -5,6 +5,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
+from app.schemas.company import CompanyInput, CompanySummary
+
 
 class ApplicationStatus(StrEnum):
     SAVED = "SAVED"
@@ -51,7 +53,7 @@ JobTitle = Annotated[
 
 
 class ApplicationBase(BaseModel):
-    company_id: UUID | None = None
+    # company_id: UUID | None = None
 
     job_title: JobTitle
 
@@ -80,11 +82,11 @@ class ApplicationBase(BaseModel):
 
 
 class ApplicationCreate(ApplicationBase):
-    pass
+    company : CompanyInput
 
 
 class ApplicationUpdate(BaseModel):
-    company_id: UUID | None = None
+    company_id: CompanyInput | None = None
 
     job_title: JobTitle | None = None
 
@@ -116,6 +118,9 @@ class ApplicationResponse(ApplicationBase):
     id: UUID
     application_number: int
     user_id: UUID
+
+    company: CompanySummary
+
     created_at: datetime
     updated_at: datetime
 
@@ -125,3 +130,8 @@ class ApplicationResponse(ApplicationBase):
 class ApplicationDeleteResponse(BaseModel):
     message: str
     application_id: UUID
+
+
+class CompanyApplicationsResponse(BaseModel):
+    company: CompanySummary
+    applications: list[ApplicationResponse]

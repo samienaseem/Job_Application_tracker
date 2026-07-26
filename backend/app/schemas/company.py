@@ -4,6 +4,16 @@ from pydantic import (
 from uuid import UUID
 from typing import Annotated
 
+CompanyName= Annotated(
+    str,
+    Field(
+        min_length=1,
+        max_length = 255,
+        description="The company oiffering the job",
+        example=["Tesco Mobile"]
+    )
+)
+
 class CompanyInput(BaseModel):
     name: CompanyName
 
