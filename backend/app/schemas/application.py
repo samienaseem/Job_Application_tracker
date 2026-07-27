@@ -113,6 +113,11 @@ class ApplicationUpdate(BaseModel):
     )
     notes: str | None = None
 
+    @model_validator(mode='after')
+    def company_cannot_be_null(self)->"ApplicationUpdate":
+        if "company" in self.model_field_set and self.company is None:
+            ValueError("Company cannot be null")
+        return self
 
 class ApplicationResponse(ApplicationBase):
     id: UUID
