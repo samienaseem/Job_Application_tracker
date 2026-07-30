@@ -31,3 +31,18 @@ def find_company_by_name(*, user_id:UUID, company_name:str)->dict[str,Any] | Non
     )
 
     return response.data
+
+
+def find_company_by_id(*, user_id:UUID, company_id:UUID)->dict[str,Any]:
+    response=(
+        supabase_admin.table("companies")
+        .select(COMPANY_COLUMNS)
+        .eq(id,str(company_id))
+        .eq(user_id,str(user_id))
+        .mayble_single()
+        .execute()
+    )
+    if response.data is None:
+        raise CompanyNotFoundError
+    
+    return response.data
