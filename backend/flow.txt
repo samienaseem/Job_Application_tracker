@@ -23,3 +23,47 @@ FastAPI validates it using ApplicationResponse
 FastAPI serializes it into JSON
           ↓
 Frontend receives HTTP 201 response
+
+
+
+counter execution order
+code:
+company_counts = Counter(
+    row["company_id"]
+    for row in applications_response.data
+    if row.get("company_id") is not None
+)
+
+1. for row in applications_response.data      ← the loop starts here
+2. if row.get("company_id") is not None       ← then the filter
+3. row["company_id"]                           ← then the value is produced
+4. Counter counts it
+
+
+app 1 {"company_id":"A"}
+   → for: grab this row
+   → if:  A is not None? yes → passes
+   → value: "A"
+   → Counter: {"A":1}
+
+app 2 {"company_id":"A"}
+   → for: grab next row
+   → if:  passes
+   → value: "A"
+   → Counter: {"A":2}
+
+app 3 {"company_id":"A"}
+   → for → if passes → "A" → Counter: {"A":3}
+
+app 4 {"company_id":"B"}
+   → for → if passes → "B" → Counter: {"A":3,"B":1}
+
+app 5 {"company_id":"B"}
+   → for → if passes → "B" → Counter: {"A":3,"B":2}
+
+app 6 {"company_id": None}
+   → for: grab next row
+   → if:  None is not None? NO → dropped, produces nothing
+   → (Counter unchanged)
+
+no more rows → done
