@@ -50,7 +50,7 @@ def find_company_by_id(*, user_id:UUID, company_id:UUID)->dict[str,Any]:
 
 def get_or_create_company(*,user_id:UUID, company:CompanyInput)->dict[str,Any]:
 
-    existing_company-find_company_by_name(user_id=user_id,company_name=company.name)
+    existing_company=find_company_by_name(user_id=user_id,company_name=company.name)
 
     if existing_company is not None:
         return enrich_existing_company(user_id=user_id, existing_company=existing_company, company_input=company)

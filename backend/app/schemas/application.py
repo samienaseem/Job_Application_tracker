@@ -86,7 +86,7 @@ class ApplicationCreate(ApplicationBase):
 
 
 class ApplicationUpdate(BaseModel):
-    company_id: CompanyInput | None = None
+    company: CompanyInput | None = None
 
     job_title: JobTitle | None = None
 
